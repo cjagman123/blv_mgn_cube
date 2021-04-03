@@ -45,29 +45,28 @@ M586 P2 S0 													; disable Telnet
 ; Drives - Establish the Drive designation and the direction they turn.
 ; Validate these settings as a first step.
 ; If your wiring differs, you can fix the direction here instead of rewiring.
-M569 P0 S0													; physical drive 0 goes backwards
-M569 P1 S0 													; physical drive 1 goes backwards
-M569 P2 S0 													; physical drive 2 goes backwards
-M569 P3 S0 													; physical drive 3 goes backwards
+M569 P0 S1													; physical drive 0 goes backwards
+M569 P1 S1 													; physical drive 1 goes backwards
+M569 P2 S1 													; physical drive 2 goes backwards
+M569 P3 S1 													; physical drive 3 goes backwards
 
 M569 P4 S1 													; placeholder for unused drive.  Erratic behavior can occur
 															; if unused drivers are not bound to a driver designation.
 
-M569 P5 S0													; *EDP* - 1  Drive 5 goes backwards - added drive for three z-axis design
-M569 P6 S0													; *EDP* - 1  Drive 6 goes backwards - added drive for three z-axis design
+M569 P5 S1													; *EDP* - 1  Drive 5 goes backwards - added drive for three z-axis design
+M569 P6 S1													; *EDP* - 1  Drive 6 goes backwards - added drive for three z-axis design
 
 M671 X-52.5:377.5:377.5 Y162.5:282.5:42.5 S5				; Set up three Z-axis location
 															; *EDP* - 1  This tells the Duet the physical location of the center of the leadscrews.
 															; for reference the order/sequence of defined coordinate positions MUST correspond to
 															; the order of axis drives that was specified above in the M584 gcode 1 - left, 2 - rear right and 3 - front right
 
-M92 X200.00 Y200.00 Z400.00 E2794.48 						; set steps per mm, based on using 0.9 degree steppers for X/Y and 1.8 degree steppers for the Z axis.
-															; *EDP* - 2  The Zesty Nimble uses a 30:1 gear reduction
+M92 X200.00 Y200.00 Z400.00 E837 							; set steps per mm, based on using 0.9 degree steppers for X/Y and 1.8 degree steppers for the Z axis.
 															; so the Extruder steps are *FAR* different.  Use the configurator to get your setting
 															; or refer to the base file in the BLV design.
 
 M350 X16 Y16 Z16 E16 I1 									; configure micro-stepping with interpolation
-M566 X60000.00 Y60000.00 Z2400.00 E120.00 					; set maximum instantaneous speed changes (mm/min)
+M566 X600.00 Y600.00 Z400.00 E120.00 						; set maximum instantaneous speed changes (mm/min)
 M203 X18000.00 Y18000.00 Z1000.00 E1200.00 					; set maximum speeds (mm/min) *EDP*
 M201 X1000.00 Y1000.00 Z120.00 E250.00 						; set accelerations (mm/s^2)
 M906 X1000 Y1000 Z1000 E800 I30 							; set motor currents (mA) and motor idle factor in per cent
@@ -76,7 +75,7 @@ M84 S30  													; Set idle timeout
 ; -------------------------------------------------------------------
 ;
 ; Axis Limits
-M208 X0 Y0 Z0 S1 											; set axis minima
+M208 X-23 Y0 Z0 S1 											; set axis minima
 M208 X310 Y310 Z350 S0 										; set axis maxima
 ;
 ; -------------------------------------------------------------------
@@ -120,7 +119,6 @@ M308 S2 P"e1temp" Y"thermistor" A"Coolant Temp" T10000 B3950 C0 R4700	; *EDP* - 
 
 ; Fans
 M106 P0 S0 H1 C"Parts Cooler"											; set fan 0. Parts Cooler on Printhead
-M106 P1 S1 H2 T15:45 C"Radiator" 										; *EDP* - 3 Set fan 1 to thermistically manage the Radiator fan for water-cooled loop.
 ;
 ; -------------------------------------------------------------------
 ;
@@ -134,7 +132,7 @@ M950 H1 C"e0heat" T1 										; Define heater 1 (hot-end E0) - bind the "e0_hea
 															; together, as defined above as "P1"
 
 M950 F0 C"fan0" Q500										; Define Fan_0 for use - Parts Cooler on Printhead - 4010 fan
-M950 F1 C"!fan1" Q25000										; *EDP* - 3 Define Fan_1 for use - Radiator cooling - WC heatsink. - PWM fan
+;M950 F1 C"!fan1" Q25000										; *EDP* - 3 Define Fan_1 for use - Radiator cooling - WC heatsink. - PWM fan
 M950 S0 C"duex.pwm1"										; *EDP* - 5 Define GPIO port 0 to heater3 on expansion connector, servo mode - BLTouch Z-Probe
 															; you will need to chance the C value to whatever pin you're using to control the probe.  On the BLTouch
 															; it will be whatever the Orange/Yellow wire from the BLtouch is connected to.
