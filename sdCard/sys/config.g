@@ -95,7 +95,7 @@ M558 P9 C"zprobe.in" H5 F40000 T8000 						; set Z probe type to bltouch and the
 															; and identified in the overview.
 															; Reference https://duet3d.dozuki.com/Wiki/RepRapFirmware_3_overview
 															; If you're not using an expansion board, chance the C variable according to what pin you're going to use.
-G31 P500 X28.5 Y-5 Z0.1	 									; set Z probe trigger value, offset and trigger height
+G31 P500 X-50.55 Y7 Z0.1	 								; set Z probe trigger value, offset and trigger height
 G30 S-2			 											; Set the Home Z by probing Z
 ;
 ; -------------------------------------------------------------------
