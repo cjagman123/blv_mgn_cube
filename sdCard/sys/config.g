@@ -20,7 +20,7 @@ G4 P2000													; Hold your Horses.  Add a little time to allow things to s
 G90  														; send absolute coordinates...
 M83  														; ...but relative extruder moves
 G21															; Set units to Millimeters
-M550 P"EDP" 												; set printer name -  change this to whatever you'd like
+M550 P"scoopsCube" 											; set printer name -  change this to whatever you'd like
 M584 X0 Y1 Z2:5:6 E3:4:7:8:9 								; set drive mapping to each axis --- *EDP* - 1 The "Z2:5:6" would be Z2
 															; for a standard BLV and binds the drivers to each axis it controls.  Note the
 															; M567 commage later.  These are related and connected.  This command must always come
