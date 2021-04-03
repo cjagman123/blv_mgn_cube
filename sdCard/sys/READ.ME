@@ -1,0 +1,64 @@
+This package contains the modified critical files needed to set up the BLV cube based on a number of
+modifications I have done over the BASE BLV design, and are SPECIFICALLY for RRF version 3.  
+The config.g file will NOT WORK for firmware 2.x or under.  
+
+My design modifications that affect these files (and are noted where g-code likely varies from what a BASE BLV will
+need), are as follows:
+
+		1 - Three z-axis drives using a Duex5 expansion board
+		2 - Zesty Nimble Extruder
+		3 - Zesty Kyro Water-cooled Heatsink
+		4 - Kinematic Bed support
+		5 - BLTouch Z-Probe
+		6 - Mains voltage heating bed controlled by SSR
+		7 - PT100 RTD temp sensor for the extruder using the Duet daughterboard
+		8 - Andy Gallus' switchgear wiring - this variation includes an emergency stop button that
+			kills line voltage and sets a switch to let the controller board know an emergency stop occured.
+
+Aside from the config.g file, each of the other files in the package,
+and listed below MUST be reviewed and edited to account
+for any design variations particular to YOUR build.  Each file lised below
+has a general note what to look at that may need specific editing for your specific
+machine.
+
+bed.g  			The G30 probing points must be changed to accommodate your lead screw locations if you're
+				doing a multi drive Z-axis system, and also to accommodate other probe locations based on your
+				bed size. 
+				Lives in the /sys folder.
+
+homeall.g   	Pay attention to the x and y distances in the G1 commands and that they are appropriate
+				for your bed size.  The numbers have to be LARGER than your max bed size/coordinates.  
+				Lives in the /sys folder.
+
+homex.g  		Same comment as for homeall.g - note the y distance in the G30 command.  
+				Lives in the /sys folder.
+
+homey.g 		Same comment as for homeall.g - note the y distance in the G30 command.  
+				Lives in the /sys folder.
+
+homez.g 		This command script is dependent on the fact I'm using a probe.  Edit accordingly.
+				Pay attention to the G1 command - the coordinates are for putting the probe in the middle
+				of *MY* bed - adjust accordingly for yours.  
+				Lives in the /sys folder.
+
+deployprobe.g 	This is the file called by M400 when probing.  This file MUST be properly set up based
+				on the pin you're using to probe with.  You will be looking to edit the pin name in the
+				first (and only) M950 command, and choosing the proper PWM channel you configured in the
+				config.g file.  I RECOMMEND YOU FIRST set up the macros and run them to verify that
+				the commands are properly configured, BEFORE YOU DO ANY PROBING.  
+				Lives in the /sys folder.
+
+retractprobe.g 	Same comments apply as deployprobe.g
+				Lives in the /sys folder.
+
+
+In the MACROS folder are BLTouch probe macros I use.  Make a/BLTOUCH folder in the macros folder
+and put the following files there.  You will of course need to edit them accordingly, using the
+same principles outlined for the deployprobe.g and retractprobe.g
+
+A special note regarding the BLTOUCH.  whatever you do, GO TO THE LINK BELOW AND FOLLOW IT RELIGIOUSLY.
+Do the steps one by one as needed, in their order.  You will thank me later.
+
+It may save you the need to buy new parts.
+
+The link : https://duet3d.dozuki.com/Wiki/Test_and_calibrate_the_Z_probe
