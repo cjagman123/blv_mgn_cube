@@ -101,21 +101,17 @@ G30 S-2			 											; Set the Home Z by probing Z
 ; -------------------------------------------------------------------
 ;
 ; Configure Heaters and Sensors - This will be the most involved section.  Be careful here.
-M307 H0 A65.3 C100.4 D1.1 V23.6 B0										; disable bang-bang mode for the bed heater and set PWM limit
+M307 H0 A284.0 C843.8 D11.0 B0											; Heatbed PID
 																		; *EDP* - 6 These PWM settings are for a 120v line voltage heated 750w keenovo
 																		; silicone bed. Recommend using first "M307 H0" and then autotuning per Ben's directions.
 																		; It's easy and quick. Have the gcode console open on the DWC to see the valuese you'll need.
-
-M308 S0 P"bedtemp" Y"thermistor" A"Bed Temp" T100000 B3950				; Configure bed temperature sensor - This is a standard temp sensor and the typical format
-																		; you'll use for most temp sensors.
+M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4725 C0.0000000706 R4700 ; configure sensor 0 as thermistor on pin bedtemp
 M143 H0 S120															; set temperature limit for heater 0 to 120C
 M307 H1 A892.0 C209.3 D7.1 V23.6 B0
-M308 S1 P"spi.cs1" Y"rtd-max31865" A"Main Nozzle Temp"  				; *EDP* - 7 Configure extruder_0 temperature sensor - specific to a PT100 sensor on daughterboard.
+M308 S1 P"e0temp" Y"thermistor" A"Hotend" T100000 B4725 C0.0000000706 R4700	 ;configure sensor 1 as thermistor on pin e0temp 
 																		; refer to https://duet3d.dozuki.com/Wiki/RepRapFirmware_3_overview for pin name nomenclature.
 M143 H1 S280                                     						; set temperature limit for heater 1 to 280C
-M308 S2 P"e1temp" Y"thermistor" A"Coolant Temp" T10000 B3950 C0 R4700	; *EDP* - 3 Configure Coolant Temp Sensor
-																		; This was added to allow me to see my coolant temps.
-																		; It is not part of the base BLV build
+M308 S2 P"mcu-temp" Y"mcu-temp" A"Duet Board" 							; Configure MCU sensor
 
 ; Fans
 M106 P0 S0 H1 C"Parts Cooler"											; set fan 0. Parts Cooler on Printhead
@@ -132,7 +128,6 @@ M950 H1 C"e0heat" T1 										; Define heater 1 (hot-end E0) - bind the "e0_hea
 															; together, as defined above as "P1"
 
 M950 F0 C"fan0" Q500										; Define Fan_0 for use - Parts Cooler on Printhead - 4010 fan
-;M950 F1 C"!fan1" Q25000										; *EDP* - 3 Define Fan_1 for use - Radiator cooling - WC heatsink. - PWM fan
 M950 S0 C"duex.pwm1"										; *EDP* - 5 Define GPIO port 0 to heater3 on expansion connector, servo mode - BLTouch Z-Probe
 															; you will need to chance the C value to whatever pin you're using to control the probe.  On the BLTouch
 															; it will be whatever the Orange/Yellow wire from the BLtouch is connected to.
@@ -155,4 +150,5 @@ M581 P"duex.e6stop" T0  									; Define action to be taken with activation of 
 ;
 ; Miscellaneous
 T0 															; select first tool
+M911 S10 R11 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000" 			; set voltage thresholds and actions to run on power loss
 M501														; Store parameters
