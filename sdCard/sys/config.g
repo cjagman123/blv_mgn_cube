@@ -151,4 +151,4 @@ M581 P"duex.e6stop" T0  									; Define action to be taken with activation of 
 ; Miscellaneous
 T0 															; select first tool
 M911 S10 R11 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000" 			; set voltage thresholds and actions to run on power loss
-M501														; Store parameters
+M501														; Store 1 parameters
